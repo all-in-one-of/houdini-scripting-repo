@@ -1,5 +1,8 @@
 import traceback
 nodes = hou.selectedNodes()
+
+def formatprint(name, current, default, folders,templateType):
+	print '{:10.10}:\t{:10.10}\t{:10.10}\t{:10.20}\t{:10.20}'.format(name, current, default,folders,templateType)
 # iterate through selected nodes
 print '\nNon Default Parameters-----------------------------------------'
 for  node in nodes:
@@ -23,19 +26,32 @@ for  node in nodes:
 			#print data
 			if str(parmType) == 'parmTemplateType.Int' or str(parmType) == 'parmTemplateType.Float': 	
 				for current, default in zip(currentValue,defaultValue):
-					print '{:10.10}:\t{:10.10}\t{:10.10}'.format(name, current, default)
+					print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 			if str(parmType) == 'parmTemplateType.Menu':
 				labels = parm.parmTemplate().menuLabels()
 				current = labels[currentValue[0]]
 				default = labels[defaultValue]
-				print '{:10.10}:\t{:10.10}\t{:10.10}'.format(name, current, default)
+				print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 			if str(parmType) == 'parmTemplateType.Toggle':
 				current = str(bool(currentValue[0]))
 				default = str(defaultValue)
-				print '{:10.10}:\t{:10.10}\t{:10.10}'.format(name, current, default)
+				print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 			if str(parmType) == 'parmTemplateType.String':
 				current = currentValue[0]
 				default = defaultValue[0]
-				print '{:10.10}:\t{:20.20}\t{:10.10}'.format(name, current, default)
-			if str(parmType) == 'parmTemplateType.FolderSet':
+				print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
+			if str(parmType) == 'parmTemplateType.Ramp':
+				print 'RAMP PARAMETER'
+				print parm.values()
+				"""
+				current = currentValue[0]
+				default = defaultValue[0]
+				print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
+				"""
+			if (str(parmType) == 'parmTemplateType.FolderSet' or
+					str(parmType) == 'parmTemplateType.Button' or
+				  	str(parmType) == 'parmTemplateType.FolderSet' or
+				   	str(parmType) == 'parmTemplateType.Separator' or
+				    str(parmType) == 'parmTemplateType.Label'):
 				print 'This is a folderSet'
+
