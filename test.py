@@ -9,6 +9,18 @@ nodes = hou.selectedNodes()
 def formatprint(name, current, default, folders,templateType):
 	print '{:20}:\t{:10}\t{:10}\t{:20}\t{:20}'.format(name, current, default,folders,templateType)
 
+#Check both parm template default and script initialization defaults
+def isNonDefault(parm, defaultParm):
+	if parm is not None and defaultParm is not None: 
+		if not parm.eval() == defaultParm.eval():
+			return True
+		else:
+			return False
+	# spare parameters, essentially
+	elif parm is not None:
+		return True
+	else:
+		return False
 
 print 'after'
 # iterate through selected nodes
@@ -23,7 +35,7 @@ for  node in nodes:
 
 	# iterate through parameters of current node
 	for parm,defaultParm in map(None,parms,cache.parmTuples()):
-		if not parm.isAtDefault() and  not defaultParm.eval() == parm.eval():
+		if isNonDefault(parm,defaultParm):
 			# organize and gather data
 			parmPath = parm.node().path()
 			name =  parm.parmTemplate().label()
@@ -56,14 +68,14 @@ for  node in nodes:
 				default = defaultValue[0]
 				formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 			if str(parmType) == 'parmTemplateType.Ramp':
-				print 'RAMP PARAMETER'
-				formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
+			#	formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 				"""
 				current = currentValue[0]
 				default = defaultValue[0]
 				print formatprint(name, current, default,parm[0].containingFolders(),parm[0].parmTemplate().type())
 				if (str(parmType) == 'parmTemplateType.FolderSet' or
 					str(parmType) == 'parmTemplateType.Button' or
+					str(parmType) == 'parmTemplateType.Ramp' or
 				  	str(parmType) == 'parmTemplateType.FolderSet' or
 				   	str(parmType) == 'parmTemplateType.Separator' or
 				    str(parmType) == 'parmTemplateType.Label'):
