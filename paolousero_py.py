@@ -10,7 +10,7 @@
 
 import hou
 import traceback
-	
+
 #-------------------------------------------------------------------
 # HELPERS                                                          |
 #-------------------------------------------------------------------
@@ -55,7 +55,7 @@ def execute():
 	# ensure user input didn't error
 	if nodes != None:	
 		# iterate through selected nodes
-		print('\nNon Default Parameters-----------------------------------------')		
+		print ('\nNon Default Parameters-----------------------------------------')		
 		header = lambda nodePath: '\n{nodepath}\n{data}'.format(nodepath = nodePath, data = formatted(str('name'), str('currentVal'), str('defaultVal'), str('Folder'), str('type or parent param')))
 		
 		for currentNode in nodes:		
@@ -118,3 +118,8 @@ def execute():
 		
 						"""
 			cache.destroy()
+
+#-------------------------------------------------------------------
+# EXECUTE                                                          |
+#-------------------------------------------------------------------
+execute()
